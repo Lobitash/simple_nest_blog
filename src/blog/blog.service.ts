@@ -1,19 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Blog } from './blog.schema';
-import { Model } from 'mongoose';
+import { BlogRepository } from './blog.repository';
 
 @Injectable()
 export class BlogService {
-  constructor(@InjectModel(Blog.name) private blogModel: Model<Blog>) {}
+  constructor(private readonly blogRepository: BlogRepository) {}
 
   async createBlog(title: string, content: string, authorId: string) {
-    const blog = new this.blogModel({ title, content, authorId });
-    console.log('Blog created successfully');
-    return blog.save();
+    return this.blogRepository.create(title, content, authorId);
   }
 
   async getBlogs() {
-    return this.blogModel.find();
+    return this.blogRepository.getBlogs();
   }
 }
