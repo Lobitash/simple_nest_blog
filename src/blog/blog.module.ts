@@ -4,12 +4,17 @@ import { BlogController } from './blog.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Blog, BlogSchema } from './blog.schema';
 import { BlogRepository } from './blog.repository';
+import { UserRepository } from 'src/user/user.repository';
+import { User, UserSchema } from 'src/user/user.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Blog.name, schema: BlogSchema }]),
+    MongooseModule.forFeature([
+      { name: Blog.name, schema: BlogSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
   ],
-  providers: [BlogService, BlogRepository],
+  providers: [BlogService, BlogRepository, UserRepository],
   controllers: [BlogController],
   exports: [BlogRepository],
 })

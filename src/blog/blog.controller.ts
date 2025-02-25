@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body, Req } from '@nestjs/common';
 import { BlogService } from './blog.service';
 
 @Controller('blog')
@@ -7,8 +7,19 @@ export class BlogController {
   @Post('create')
   async create(
     @Body() body: { title: string; content: string; authorId: string },
+    @Req() req,
   ) {
-    return this.blogService.createBlog(body.title, body.content, body.authorId);
+    console.log(req);
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new Error('User not found');
+    }
+    return this.blogService.createBlog(
+      body.title,
+      body.content,
+      body.authorId,
+      userId,
+    );
   }
 
   @Get('list')
