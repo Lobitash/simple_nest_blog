@@ -7,7 +7,12 @@ import { Blog } from './blog.schema';
 export class BlogRepository {
   constructor(@InjectModel(Blog.name) private blogModel: Model<Blog>) {}
 
-  async create(title: string, content: string, authorId: string) {
+  async create(
+    title: string,
+    content: string,
+    authorId: string,
+    userId: string,
+  ) {
     const blog = new this.blogModel({ title, content, authorId });
     return blog.save();
   }
