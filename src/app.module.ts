@@ -8,7 +8,9 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/nest-blog'),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/nest-blog', {
+      serverSelectionTimeoutMS: 5000,
+    }),
     UserModule,
     BlogModule,
     AuthModule,

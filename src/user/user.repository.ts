@@ -19,4 +19,8 @@ export class UserRepository {
   async findById(id: string): Promise<User | null> {
     return this.userModel.findById(id).exec();
   }
+
+  async incrementPostCount(userId: string): Promise<void> {
+    await this.userModel.findById(userId, { $inc: { posts: 1 } }).exec();
+  }
 }
