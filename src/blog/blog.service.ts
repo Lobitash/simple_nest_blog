@@ -9,18 +9,9 @@ export class BlogService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async createBlog(
-    title: string,
-    content: string,
-    authorId: string,
-    userId: string,
-  ) {
-    const newBlog = this.blogRepository.create(
-      title,
-      content,
-      authorId,
-      userId,
-    );
+  async createBlog(title: string, content: string, userId: string) {
+    console.log('Creating Blog:', { title, content, author: userId });
+    const newBlog = await this.blogRepository.create(title, content, userId);
     await this.userRepository.incrementPostCount(userId);
     return newBlog;
   }
