@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { ClientSession, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { User } from './user.schema';
 import { Types } from 'mongoose';
@@ -21,12 +21,11 @@ export class UserRepository {
     return this.userModel.findById(id).exec();
   }
 
-  async incrementPostCount(userId: string) {
-    console.log('Incrementing post count for:', userId);
-    // await this.userModel.findById(userId, { $inc: { posts: 1 } }).exec();
+  async incrementPostCount(userId: string, session: ClientSession) {
     return this.userModel.updateOne(
-      { _id: new Types.ObjectId(userId) }, // ✅ Ensure userId is an ObjectId
+      { _id: new Types.ObjectId(userId) },
       { $inc: { posts: 1 } },
+      { session },
     );
   }
 }

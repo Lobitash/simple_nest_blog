@@ -9,9 +9,7 @@ export class BlogController {
   @UseGuards(JwtAuthGuard)
   @Post('create')
   async create(@Body() body: { title: string; content: string }, @Req() req) {
-    console.log(req.user);
     const userId = req.user?.id;
-    console.log('This is UserId from BlogController', userId);
     if (!userId) {
       throw new Error('User not found');
     }
