@@ -9,9 +9,6 @@ export class Blog extends Document {
   @Prop({ required: true })
   content: string;
 
-  @Prop({ required: true })
-  authorId: string;
-
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   author: Types.ObjectId;
 }
