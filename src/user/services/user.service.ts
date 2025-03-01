@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from './user.schema';
+import { User } from '../schemas/user.schema';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { UserRepository } from 'src/user/user.repository';
+import { UserRepository } from 'src/user/repositories/user.repository';
 
 @Injectable()
 export class UserService {

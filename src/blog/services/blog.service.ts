@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BlogRepository } from './blog.repository';
-import { BlogManager } from './blog.manager';
+import { BlogRepository } from '../repositories/blog.repository';
+import { BlogManager } from '../managers/blog.manager';
 @Injectable()
 export class BlogService {
   constructor(
