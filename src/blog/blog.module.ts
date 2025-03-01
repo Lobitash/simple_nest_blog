@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { BlogService } from './blog.service';
-import { BlogController } from './blog.controller';
+import { BlogService } from './services/blog.service';
+import { BlogController } from './controllers/blog.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Blog, BlogSchema } from './blog.schema';
-import { BlogRepository } from './blog.repository';
-import { UserRepository } from 'src/user/user.repository';
-import { User, UserSchema } from 'src/user/user.schema';
-import { BlogManager } from './blog.manager';
+import { Blog, BlogSchema } from './schemas/blog.schema';
+import { BlogRepository } from './repositories/blog.repository';
+import { UserRepository } from 'src/user/repositories/user.repository';
+import { User, UserSchema } from 'src/user/schemas/user.schema';
+import { BlogManager } from './managers/blog.manager';
 
 @Module({
   imports: [

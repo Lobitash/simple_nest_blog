@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { BlogRepository } from './blog.repository';
-import { UserRepository } from 'src/user/user.repository';
+import { BlogRepository } from '../repositories/blog.repository';
+import { UserRepository } from 'src/user/repositories/user.repository';
 
 @Injectable()
 export class BlogManager {

@@ -1,7 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ClientSession } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { Blog } from './blog.schema';
+import { Blog } from '../schemas/blog.schema';
 import { Types } from 'mongoose';
 
 @Injectable()
