@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/nest-blog', {
       serverSelectionTimeoutMS: 5000,
+      // replicaSet: 'rs0',
     }),
     UserModule,
     BlogModule,
