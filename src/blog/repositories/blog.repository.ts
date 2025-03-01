@@ -23,6 +23,17 @@ export class BlogRepository {
     return blog.save({ session });
   }
 
+  // async create2(
+  //   title: string,
+  //   content: string,
+  //   userId: string,
+  //   session: ClientSession,
+  // ) {
+  //   return this.blogModel.create([{ title, content, author: userId }], {
+  //     session,
+  //   });
+  // }
+
   async getBlogs() {
     return this.blogModel.find().exec();
   }

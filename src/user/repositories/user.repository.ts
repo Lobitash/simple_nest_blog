@@ -28,4 +28,12 @@ export class UserRepository {
       { session },
     );
   }
+
+  // async incrementPostCount2(userId: string, session: ClientSession) {
+  //   return this.userModel.updateOne(
+  //     { _id: userId },
+  //     { $inc: { posts: 1 } },
+  //     { session },
+  //   );
+  // }
 }

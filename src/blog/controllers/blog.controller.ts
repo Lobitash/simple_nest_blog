@@ -1,6 +1,8 @@
 import { Controller, Post, Get, Body, Req, UseGuards } from '@nestjs/common';
 import { BlogService } from '../services/blog.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateBlogDto } from '../dtos/create-blog.dto';
+import { Request } from 'express';
 
 @Controller('blog')
 export class BlogController {
@@ -8,12 +10,12 @@ export class BlogController {
 
   @UseGuards(JwtAuthGuard)
   @Post('create')
-  async create(@Body() body: { title: string; content: string }, @Req() req) {
+  async create(@Body() createBlogDto: CreateBlogDto, @Req() req: Request) {
     const userId = req.user?.id;
     if (!userId) {
       throw new Error('User not found');
     }
-    return this.blogService.createBlog(body.title, body.content, userId);
+    return this.blogService.createBlog(createBlogDto, userId);
   }
 
   @Get('list')

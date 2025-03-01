@@ -3,6 +3,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { BlogRepository } from '../repositories/blog.repository';
 import { UserRepository } from 'src/user/repositories/user.repository';
+import { CreateBlogDto } from '../dtos/create-blog.dto';
 
 @Injectable()
 export class BlogManager {
@@ -12,14 +13,14 @@ export class BlogManager {
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
-  async createBlog(title: string, content: string, userId: string) {
+  async createBlog(dto: CreateBlogDto, userId: string) {
     const session = await this.connection.startSession();
     session.startTransaction();
 
     try {
       const newBlog = await this.blogRepository.create(
-        title,
-        content,
+        dto.title,
+        dto.content,
         userId,
         session,
       );

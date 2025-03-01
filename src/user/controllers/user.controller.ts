@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
+  //Unused APIs , Moved signUp and login to AuthController
 
   @Post('signup')
   async signup(@Body() body: { email: string; password: string }) {
