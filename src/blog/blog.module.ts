@@ -6,6 +6,7 @@ import { Blog, BlogSchema } from './blog.schema';
 import { BlogRepository } from './blog.repository';
 import { UserRepository } from 'src/user/user.repository';
 import { User, UserSchema } from 'src/user/user.schema';
+import { BlogManager } from './blog.manager';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { User, UserSchema } from 'src/user/user.schema';
       { name: User.name, schema: UserSchema },
     ]),
   ],
-  providers: [BlogService, BlogRepository, UserRepository],
+  providers: [BlogService, BlogRepository, UserRepository, BlogManager],
   controllers: [BlogController],
   exports: [BlogRepository],
 })
