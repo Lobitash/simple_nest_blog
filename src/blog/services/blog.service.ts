@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BlogRepository } from '../repositories/blog.repository';
 import { BlogManager } from '../managers/blog.manager';
+import { CreateBlogDto } from '../dtos/create-blog.dto';
 @Injectable()
 export class BlogService {
   constructor(
@@ -8,8 +9,8 @@ export class BlogService {
     private readonly blogManger: BlogManager,
   ) {}
 
-  async createBlog(title: string, content: string, userId: string) {
-    const newBlog = await this.blogManger.createBlog(title, content, userId);
+  async createBlog(dto: CreateBlogDto, userId: string) {
+    const newBlog = await this.blogManger.createBlog(dto, userId);
     return newBlog;
   }
 
