@@ -2,23 +2,23 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../schemas/user.schema';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { UserRepository } from 'src/user/repositories/user.repository';
+import { UserMongodbRepository } from 'src/user/repositories/mongodb/user.mongo.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly UserMongodbRepository: UserMongodbRepository) {}
 
   async createUser(userData: Partial<User>): Promise<User> {
-    return this.userRepository.createUser(userData);
+    return this.UserMongodbRepository.createUser(userData);
   }
 
   async signup(email: string, password: string) {
-    const user = await this.userRepository.findUserByEmail(email);
+    const user = await this.UserMongodbRepository.findUserByEmail(email);
     if (user) {
       throw new UnauthorizedException('User already exists');
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await this.userRepository.createUser({
+      const newUser = await this.UserMongodbRepository.createUser({
         email,
         password: hashedPassword,
       });
@@ -32,7 +32,7 @@ export class UserService {
   }
 
   async login(email: string, password: string): Promise<string> {
-    const user = await this.userRepository.findUserByEmail(email);
+    const user = await this.UserMongodbRepository.findUserByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Invalid Credentials');
     }
@@ -44,6 +44,6 @@ export class UserService {
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findUserByEmail(email);
+    return this.UserMongodbRepository.findUserByEmail(email);
   }
 }

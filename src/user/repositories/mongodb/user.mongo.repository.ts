@@ -1,14 +1,15 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { User } from '../schemas/user.schema';
+import { User } from '../../schemas/user.schema';
 import { Types } from 'mongoose';
 
 @Injectable()
-export class UserRepository {
+export class UserMongodbRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async createUser(userData: Partial<User>): Promise<User> {
+    console.log('Mongo User', userData);
     const newUser = new this.userModel(userData);
     return newUser.save();
   }

@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { BlogRepository } from '../repositories/blog.repository';
-import { UserRepository } from 'src/user/repositories/user.repository';
+import { BlogRepository } from '../repositories/mongodb/blog.mongo.repository';
+import { UserMongodbRepository } from 'src/user/repositories/mongodb/user.mongo.repository';
 import { CreateBlogDto } from '../dtos/create-blog.dto';
 
 @Injectable()
 export class BlogManager {
   constructor(
     private readonly blogRepository: BlogRepository,
-    private readonly userRepository: UserRepository,
+    private readonly UserMongodbRepository: UserMongodbRepository,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
@@ -25,7 +25,7 @@ export class BlogManager {
         session,
       );
 
-      await this.userRepository.incrementPostCount(userId, session);
+      await this.UserMongodbRepository.incrementPostCount(userId, session);
 
       await session.commitTransaction();
       return newBlog;
