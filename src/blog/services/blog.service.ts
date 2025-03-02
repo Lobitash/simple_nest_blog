@@ -1,17 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
-import { BlogRepository } from '../repositories/mongodb/blog.mongo.repository';
-import { BlogManager } from '../managers/blog.manager';
+// import { BlogManager } from '../managers/blog.manager';
 import { CreateBlogDto } from '../dtos/create-blog.dto';
-import { Transaction } from 'mongodb';
+import { BlogMongodbRepository } from '../repositories/blog.mongo.repository';
+import { BlogSqlRepository } from '../repositories/blog.sql.repository';
+import { IBlogRepository } from '../repositories/interfaces/blog.repository.interface';
 @Injectable()
 export class BlogService {
+  private blogRepo: IBlogRepository;
   constructor(
-    private readonly blogRepository: BlogRepository,
-    private readonly blogManger: BlogManager,
-  ) {}
+    private readonly BlogsqlRepo: BlogMongodbRepository,
+    private readonly BlogMongodbRepo: BlogSqlRepository,
+    // private readonly blogManger: BlogManager,
+  ) {
+    this.blogRepo =
+      process.env.DB_TYPE === 'sql' ? this.BlogsqlRepo : this.BlogMongodbRepo;
+  }
 
   async createBlog(dto: CreateBlogDto, userId: string) {
-    const newBlog = await this.blogManger.createBlog(dto, userId);
+    const newBlog = await this.blogRepo.createBlog({
+      title: dto.title,
+      content: dto.content,
+      userId,
+    });
 
     // const tra = (trx: TransactionManager) => {};
 
@@ -19,6 +31,6 @@ export class BlogService {
   }
 
   async getBlogs() {
-    return this.blogRepository.getBlogs();
+    return this.blogRepo.getBlogs();
   }
 }

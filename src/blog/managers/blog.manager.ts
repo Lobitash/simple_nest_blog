@@ -1,39 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
-import { BlogRepository } from '../repositories/mongodb/blog.mongo.repository';
-import { UserMongodbRepository } from 'src/user/repositories/mongodb/user.mongo.repository';
+import { UserMongodbRepository } from 'src/user/repositories/user.mongo.repository';
 import { CreateBlogDto } from '../dtos/create-blog.dto';
-
+import { IBlogRepository } from '../repositories/interfaces/blog.repository.interface';
+import { BlogMongodbRepository } from '../repositories/blog.mongo.repository';
+import { BlogSqlRepository } from '../repositories/blog.sql.repository';
+import { ITransactionExecuter } from 'src/shared/transaction/transaction.executer';
 @Injectable()
 export class BlogManager {
+  private blogRepo: IBlogRepository;
   constructor(
-    private readonly blogRepository: BlogRepository,
+    private readonly BlogsqlRepo: BlogMongodbRepository,
+    private readonly BlogMongodbRepo: BlogSqlRepository,
     private readonly UserMongodbRepository: UserMongodbRepository,
-    @InjectConnection() private readonly connection: Connection,
-  ) {}
+    private readonly transactionManager: ITransactionExecuter,
+  ) {
+    this.blogRepo =
+      process.env.DB_TYPE === 'sql' ? this.BlogsqlRepo : this.BlogMongodbRepo;
+  }
 
   async createBlog(dto: CreateBlogDto, userId: string) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      const newBlog = await this.blogRepository.create(
-        dto.title,
-        dto.content,
-        userId,
-        session,
+    return this.transactionManager.executeTransaction(async (transaction) => {
+      const newBlog = await this.blogRepo.createBlog(
+        {
+          title: dto.title,
+          content: dto.content,
+          userId,
+        },
+        transaction,
       );
 
-      await this.UserMongodbRepository.incrementPostCount(userId, session);
-
-      await session.commitTransaction();
+      await this.UserMongodbRepository.incrementPostCount(userId, transaction);
       return newBlog;
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
+    });
   }
 }

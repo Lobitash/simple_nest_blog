@@ -4,11 +4,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from '../user/user.module';
-import { UserMongodbRepository } from 'src/user/repositories/mongodb/user.mongo.repository';
+import { UserMongodbRepository } from 'src/user/repositories/user.mongo.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema, User } from 'src/user/schemas/user.schema';
 import { AuthController } from './controllers/auth.controller';
-import { UserSqlRepository } from 'src/user/repositories/sql/user.sql.repository';
+import { UserSqlRepository } from 'src/user/repositories/user.sql.repository';
 import { User as UserEntity } from 'src/user/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({

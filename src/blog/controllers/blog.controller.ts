@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Controller, Post, Get, Body, Req, UseGuards } from '@nestjs/common';
 import { BlogService } from '../services/blog.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
