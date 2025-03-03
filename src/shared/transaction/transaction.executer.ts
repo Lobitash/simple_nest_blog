@@ -1,11 +1,13 @@
-export interface ITransactionExecuter {
-  executeTransaction<R>(
-    callback: (transactionManager: any) => Promise<R>,
-  ): Promise<R>;
-}
+import { Injectable } from "@nestjs/common";
+import { ITransactionExecuter } from "./transaction.executer.interface";
 
-// export interface ITransactionExecuter {
-//   executeTransaction: <R>(
-//     callback: (transactionManager: TransactionManager) => R,
-//   ) => Promise<R>;
-// }
+@Injectable()
+export class TransactionManager implements ITransactionExecuter {
+
+  async executeTransaction<R>(
+    callback: (transactionManager: any) => Promise<R>,
+  ): Promise<R> {
+    return callback(null)
+  }
+
+}

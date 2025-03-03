@@ -13,12 +13,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SqlTransactionExecuter } from 'src/shared/transaction/sql.transaction.executer';
 import { MongooseTransactionExecuter } from 'src/shared/transaction/mongoose.transaction.executer';
 
-const TransactionExecuterProvider: Provider = {
-  provide: 'TransactionExecuter',
-  useClass:
-    process.env.DB_TYPE === 'sql'
-      ? SqlTransactionExecuter
-      : MongooseTransactionExecuter,
+// const TransactionExecuterProviders: Provider = {
+//   provide: 'TransactionExecuter',
+//   useClass:
+//     process.env.DB_TYPE === 'sql'
+//       ? SqlTransactionExecuter
+//       : MongooseTransactionExecuter,
+// };
+
+const TransactionExecuterProvider = {
+  provide: 'ITransactionExecuter',
+  useFactory: (sqlExecuter: SqlTransactionExecuter, mongoExecuter: MongooseTransactionExecuter) => {
+    return process.env.DB_TYPE === 'sql' ? sqlExecuter : mongoExecuter;
+  },
+  inject: [SqlTransactionExecuter, MongooseTransactionExecuter],
 };
 
 @Module({
@@ -36,8 +44,12 @@ const TransactionExecuterProvider: Provider = {
     UserMongodbRepository,
     BlogManager,
     TransactionExecuterProvider,
+    SqlTransactionExecuter,
+    MongooseTransactionExecuter,
+    { provide: 'UserRepository', useClass: UserMongodbRepository },
   ],
   controllers: [BlogController],
-  exports: [BlogMongodbRepository, BlogSqlRepository, 'TransactionExecuter'],
+  exports: [BlogMongodbRepository, BlogSqlRepository,
+    UserMongodbRepository, 'ITransactionExecuter'],
 })
-export class BlogModule {}
+export class BlogModule { }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/only-throw-error */
 import { ClientSession, Connection } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { ITransactionExecuter } from './transaction.executer';
+import { ITransactionExecuter } from './transaction.executer.interface';
 
 // export interface ITransactionExecuter {
 //   executeTransaction: <R>(

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserMongodbRepository } from 'src/user/repositories/user.mongo.repository';
 import { CreateBlogDto } from '../dtos/create-blog.dto';
 import { IBlogRepository } from '../repositories/interfaces/blog.repository.interface';
 import { BlogMongodbRepository } from '../repositories/blog.mongo.repository';
 import { BlogSqlRepository } from '../repositories/blog.sql.repository';
-import { ITransactionExecuter } from 'src/shared/transaction/transaction.executer';
+import { ITransactionExecuter } from 'src/shared/transaction/transaction.executer.interface';
 @Injectable()
 export class BlogManager {
   private blogRepo: IBlogRepository;
@@ -14,6 +14,7 @@ export class BlogManager {
     private readonly BlogsqlRepo: BlogMongodbRepository,
     private readonly BlogMongodbRepo: BlogSqlRepository,
     private readonly UserMongodbRepository: UserMongodbRepository,
+    @Inject('ITransactionExecuter')
     private readonly transactionManager: ITransactionExecuter,
   ) {
     this.blogRepo =
