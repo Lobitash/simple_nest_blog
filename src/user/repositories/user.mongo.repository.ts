@@ -37,4 +37,8 @@ export class UserMongodbRepository {
   //     { session },
   //   );
   // }
+
+  async getUsers(){
+    return this.userModel.find().exec()
+  }
 }

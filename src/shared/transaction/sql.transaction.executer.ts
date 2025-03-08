@@ -4,7 +4,10 @@ import { ITransactionExecuter } from './transaction.executer.interface';
 
 @Injectable()
 export class SqlTransactionExecuter implements ITransactionExecuter {
-  constructor(private readonly dataSource: DataSource) { }
+  constructor(private readonly dataSource: DataSource) {
+    console.log('SQL Transaction Executer')
+
+   }
 
 
   async executeTransaction<R>(

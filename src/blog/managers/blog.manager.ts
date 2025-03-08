@@ -11,17 +11,18 @@ import { ITransactionExecuter } from 'src/shared/transaction/transaction.execute
 export class BlogManager {
   private blogRepo: IBlogRepository;
   constructor(
-    private readonly BlogsqlRepo: BlogMongodbRepository,
-    private readonly BlogMongodbRepo: BlogSqlRepository,
+    private readonly BlogsqlRepo: BlogSqlRepository,
+    private readonly BlogMongodbRepo:  BlogMongodbRepository,
     private readonly UserMongodbRepository: UserMongodbRepository,
     @Inject('ITransactionExecuter')
     private readonly transactionManager: ITransactionExecuter,
   ) {
     this.blogRepo =
-      process.env.DB_TYPE === 'sql' ? this.BlogsqlRepo : this.BlogMongodbRepo;
+      process.env.DATABASE_TYPE === 'sql' ? this.BlogsqlRepo : this.BlogMongodbRepo;
   }
 
   async createBlog(dto: CreateBlogDto, userId: string) {
+    console.log('Blog Manager')
     return this.transactionManager.executeTransaction(async (transaction) => {
       const newBlog = await this.blogRepo.createBlog(
         {

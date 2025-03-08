@@ -21,6 +21,7 @@ export class BlogController {
 
   @Get('list')
   async getblogs() {
+    console.log('Blog Controller, GetBlogs')
     return this.blogService.getBlogs();
   }
 }

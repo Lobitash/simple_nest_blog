@@ -17,7 +17,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     const user =
-      process.env.DB_TYPE === 'sql'
+      process.env.DATABASE_TYPE === 'sql'
         ? await this.UserSqlRepo.findUserByEmail(email)
         : await this.UserMongodbRepo.findUserByEmail(email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
@@ -39,7 +39,7 @@ export class AuthService {
 
   async signup(dto: SignupDto) {
     const existingUser =
-      process.env.DB_TYPE === 'sql'
+      process.env.DATABASE_TYPE === 'sql'
         ? await this.UserSqlRepo.findUserByEmail(dto.email)
         : await this.UserMongodbRepo.findUserByEmail(dto.email);
     if (existingUser) {
@@ -47,7 +47,7 @@ export class AuthService {
     }
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const newUser =
-      process.env.DB_TYPE === 'sql'
+      process.env.DATABASE_TYPE === 'sql'
         ? await this.UserSqlRepo.createUser({
             email: dto.email,
             password: hashedPassword,

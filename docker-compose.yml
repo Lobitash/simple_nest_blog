@@ -1,32 +1,55 @@
 services:
-  mongo:
+  mongodb:
     image: mongo:latest
-    container_name: my_mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    container_name: mongodb
+    user: root
     ports:
-      - '27017:27017'
-    command: ['mongod', '--replSet', 'rs0']
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+    command: ["--replSet", "rs0"]
     healthcheck:
-      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
-      timeout: 5s
       retries: 5
 
-  nestjs:
-    build: .
-    container_name: my_nestjs
-    restart: always
-    depends_on:
-      mongo:
-        condition: service_healthy
-    environment:
-      MONGO_URI: 'mongodb://root:example@mongo:27017/nestjs?authSource=admin&replicaSet=rs0'
-    ports:
-      - '3000:3000'
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports: 
+     - "5433:5432"
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: openup
+      POSTGRES_DB: simple_nestjs_blog
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: ['sh', '-c', 'npm install && npm run start:dev']
+      - ./data/postgres:/data/db
+    networks:
+      - app-network
+
+  app:
+    build: . 
+    container_name: nestjs-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - postgres
+    networks:
+      - app-network
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017/nest-blog"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "openup"
+      POSTGRES_DB: "simple_nestjs_blog"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+    mongodb_data: 

@@ -16,6 +16,8 @@ export class BlogSqlRepository implements IBlogRepository {
     data: { title: string; content: string; userId: string },
     session?: EntityManager,
   ): Promise<Blog> {
+    console.log('Blog SQL Repository')
+
     // const blog = this.blogRepo.create({
     //   title,
     //   content,

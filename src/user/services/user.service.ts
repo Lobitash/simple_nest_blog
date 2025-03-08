@@ -46,4 +46,8 @@ export class UserService {
   async getUserByEmail(email: string): Promise<User | null> {
     return this.UserMongodbRepository.findUserByEmail(email);
   }
+
+  async getUsers(){
+   return this.UserMongodbRepository.getUsers()
+  }
 }

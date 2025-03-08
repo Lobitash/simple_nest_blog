@@ -13,6 +13,8 @@ export class BlogMongodbRepository implements IBlogRepository {
     data: { title: string; content: string; userId: string },
     session?: ClientSession,
   ): Promise<Blog> {
+    console.log('Blog Mongoose Repository')
+
     const blog = new this.blogModel({
       title: data.title,
       content: data.content,

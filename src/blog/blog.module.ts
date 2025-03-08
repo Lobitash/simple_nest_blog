@@ -12,11 +12,11 @@ import { Blog as BlogEntity } from './entities/blog.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SqlTransactionExecuter } from 'src/shared/transaction/sql.transaction.executer';
 import { MongooseTransactionExecuter } from 'src/shared/transaction/mongoose.transaction.executer';
-
+import { TransactionProvider } from 'src/shared/transaction/transaction.provider';
 // const TransactionExecuterProviders: Provider = {
 //   provide: 'TransactionExecuter',
 //   useClass:
-//     process.env.DB_TYPE === 'sql'
+//     process.env.DATABASE_TYPE === 'sql'
 //       ? SqlTransactionExecuter
 //       : MongooseTransactionExecuter,
 // };
@@ -24,7 +24,9 @@ import { MongooseTransactionExecuter } from 'src/shared/transaction/mongoose.tra
 const TransactionExecuterProvider = {
   provide: 'ITransactionExecuter',
   useFactory: (sqlExecuter: SqlTransactionExecuter, mongoExecuter: MongooseTransactionExecuter) => {
-    return process.env.DB_TYPE === 'sql' ? sqlExecuter : mongoExecuter;
+    //Ali said when we are using useFactories, We should read enviourmnet variables from Config 
+    // What is the difference between Reading Variables From Config and process.env
+    return process.env.DATABASE_TYPE === 'sql' ? sqlExecuter : mongoExecuter;
   },
   inject: [SqlTransactionExecuter, MongooseTransactionExecuter],
 };
@@ -47,6 +49,12 @@ const TransactionExecuterProvider = {
     SqlTransactionExecuter,
     MongooseTransactionExecuter,
     { provide: 'UserRepository', useClass: UserMongodbRepository },
+
+    //Ali Said It will also work this Way. SO we Can use useClass instead
+    // {
+    //   provide: "ekxjs",
+    //   useClass: process.env.DB == 'sql' ? SqlTransactionExecuter : MongooseTransactionExecuter
+    // }
   ],
   controllers: [BlogController],
   exports: [BlogMongodbRepository, BlogSqlRepository,

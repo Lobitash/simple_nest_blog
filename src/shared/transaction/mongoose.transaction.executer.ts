@@ -2,6 +2,7 @@
 import { ClientSession, Connection } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { ITransactionExecuter } from './transaction.executer.interface';
+import { InjectConnection } from '@nestjs/mongoose';
 
 // export interface ITransactionExecuter {
 //   executeTransaction: <R>(
@@ -10,7 +11,10 @@ import { ITransactionExecuter } from './transaction.executer.interface';
 // }
 @Injectable()
 export class MongooseTransactionExecuter implements ITransactionExecuter {
-  constructor(private readonly connection: Connection) {}
+  constructor(@InjectConnection() private readonly connection: Connection) {
+    console.log('Mongoose Transaction Executer')
+
+  }
 
   async executeTransaction<R>(
     callback: (transactionManager: ClientSession) => Promise<R>,
