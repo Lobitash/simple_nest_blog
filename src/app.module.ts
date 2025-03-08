@@ -15,7 +15,7 @@ import { Blog } from './blog/entities/blog.entity';
     //   serverSelectionTimeoutMS: 10000,
     //   // replicaSet: 'rs0',
     // }),
-    MongooseModule.forRoot("mongodb://mongodb:27017/nest-blog", {
+    MongooseModule.forRoot("mongodb://mongodb:27017/nest-blog?replicaSet=rs0", {
       directConnection: true,
       serverSelectionTimeoutMS: 10000,
     }),
