@@ -5,10 +5,11 @@ import { User } from '../schemas/user.schema';
 import { Types } from 'mongoose';
 
 @Injectable()
-export class UserRepository {
+export class UserMongodbRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async createUser(userData: Partial<User>): Promise<User> {
+    console.log('Mongo User', userData);
     const newUser = new this.userModel(userData);
     return newUser.save();
   }
@@ -36,4 +37,8 @@ export class UserRepository {
   //     { session },
   //   );
   // }
+
+  async getUsers(){
+    return this.userModel.find().exec()
+  }
 }
