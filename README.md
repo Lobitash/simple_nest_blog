@@ -45,7 +45,7 @@ npm install
 Create a `.env` file with:
 
 ```env
-DB_TYPE=mongodb
+DB_TYPE=mongo
 ```
 
 ## ▶️ Running the Project
