@@ -27,7 +27,6 @@ export class BlogController {
   @ApiOperation({ summary: 'Get all blog posts' })
   @ApiResponse({ status: 200, description: 'List of blogs' })
   async getblogs() {
-    console.log('Blog Controller, GetBlogs')
     return this.blogService.getBlogs();
   }
 }

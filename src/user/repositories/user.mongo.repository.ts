@@ -9,7 +9,6 @@ export class UserMongodbRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async createUser(userData: Partial<User>): Promise<User> {
-    console.log('Mongo User', userData);
     const newUser = new this.userModel(userData);
     return newUser.save();
   }
@@ -29,14 +28,6 @@ export class UserMongodbRepository {
       { session },
     );
   }
-
-  // async incrementPostCount2(userId: string, session: ClientSession) {
-  //   return this.userModel.updateOne(
-  //     { _id: userId },
-  //     { $inc: { posts: 1 } },
-  //     { session },
-  //   );
-  // }
 
   async getUsers(){
     return this.userModel.find().exec()

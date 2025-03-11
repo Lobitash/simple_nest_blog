@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Inject, Injectable } from '@nestjs/common';
 import { BlogManager } from '../managers/blog.manager';
 import { CreateBlogDto } from '../dtos/create-blog.dto';
@@ -20,15 +18,11 @@ export class BlogService {
   }
 
   async createBlog(dto: CreateBlogDto, userId: string) {
-    console.log('BlogService, Create Blog')
     const newBlog= this.blogManger.createBlog(dto , userId)
-    // const tra = (trx: TransactionManager) => {};
-
     return newBlog;
   }
 
   async getBlogs() {
-    console.log('BlogService, Get Blogs')
     return this.blogRepo.getBlogs();
   }
 }

@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/require-await */
 import { Injectable } from '@nestjs/common';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,18 +12,9 @@ export class BlogSqlRepository implements IBlogRepository {
     data: { title: string; content: string; userId: string },
     session?: EntityManager,
   ): Promise<Blog> {
-    console.log('Blog SQL Repository')
-
-    // const blog = this.blogRepo.create({
-    //   title,
-    //   content,
-    //   author: { id: userId },
-    // });
-    // return this.blogRepo.save(blog);
     if (session) {
       return session.getRepository(Blog).save(data);
     }
-    // const blog = this.blogRepo.create(data);
     return this.blogRepo.save(data);
   }
 
@@ -37,6 +24,5 @@ export class BlogSqlRepository implements IBlogRepository {
 
   async getBlogs() {
     return this.blogRepo.find();
-    // return this.blogRepo.find({ relations: ['author'] });
   }
 }

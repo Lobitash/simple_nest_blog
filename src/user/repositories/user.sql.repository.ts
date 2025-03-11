@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +8,6 @@ export class UserSqlRepository {
   constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
   async createUser(userData: Partial<User>): Promise<User> {
-    console.log('Sql User', userData);
     const newUser = this.userRepo.create(userData);
     return this.userRepo.save(newUser);
   }

@@ -22,7 +22,6 @@ export class BlogManager {
   }
 
   async createBlog(dto: CreateBlogDto, userId: string) {
-    console.log('Blog Manager')
     return this.transactionManager.executeTransaction(async (transaction) => {
       const newBlog = await this.blogRepo.createBlog(
         {
